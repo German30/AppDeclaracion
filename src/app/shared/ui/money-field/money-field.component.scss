@@ -1,0 +1,25 @@
+@use '../../../../styles/field';
+
+.field__currency {
+  position: absolute;
+  left: var(--space-3);
+  color: var(--text-tertiary);
+  font-weight: var(--fw-medium);
+  pointer-events: none;
+}
+
+.field__suffix {
+  position: absolute;
+  right: var(--space-3);
+  color: var(--text-tertiary);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+
+.field--money .field__control input {
+  padding-right: var(--space-10);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}

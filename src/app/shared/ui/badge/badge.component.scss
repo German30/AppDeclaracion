@@ -1,0 +1,44 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  height: 22px;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-full);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+:host.tone-neutral {
+  background: var(--n-100);
+  color: var(--n-600);
+}
+
+:host.tone-accent {
+  background: var(--a-50);
+  color: var(--a-700);
+}
+
+:host.tone-success {
+  background: var(--success-50);
+  color: var(--success-700);
+}
+
+:host.tone-warning {
+  background: var(--warning-50);
+  color: var(--warning-700);
+}
+
+:host.tone-danger {
+  background: var(--danger-50);
+  color: var(--danger-700);
+}
+
+@media (prefers-color-scheme: dark) {
+  :host.tone-neutral {
+    color: var(--n-300);
+  }
+}

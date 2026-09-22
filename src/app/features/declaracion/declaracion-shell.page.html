@@ -1,0 +1,98 @@
+@if (cargando()) {
+  <div class="shell-loading">
+    <app-skeleton width="180px" height="1.75rem" />
+    <div class="shell-loading__grid">
+      <app-skeleton height="320px" radius="var(--radius-lg)" />
+      <app-skeleton height="420px" radius="var(--radius-lg)" />
+    </div>
+  </div>
+} @else if (detalle(); as d) {
+  <div class="wizard">
+    <div class="wizard__header">
+      <a routerLink="/" class="wizard__back">
+        <app-icon name="arrow-left" [size]="14" />
+        Mis declaraciones
+      </a>
+      <div class="wizard__title-row">
+        <h1 class="wizard__title">Declaración {{ d.ejercicio }}</h1>
+        <app-badge [tone]="d.estatus === 'Calculada' && !desactualizado() ? 'success' : 'neutral'">
+          {{ desactualizado() ? 'Pendiente de recalcular' : d.estatus }}
+        </app-badge>
+      </div>
+    </div>
+
+    <div class="wizard__body">
+      <nav class="wizard__nav">
+        <app-stepper-nav [steps]="stepperItems()" (stepSelected)="goToStep($event)" />
+      </nav>
+
+      <div class="wizard__content">
+        @switch (currentStepId()) {
+          @case ('regimenes') {
+            <app-step-regimenes
+              [seleccionInicial]="regimenes()"
+              (confirmado)="onRegimenesConfirmados($event)"
+            />
+          }
+          @case ('resico') {
+            <app-step-resico
+              [declaracionId]="declaracionId"
+              [initial]="d.ingresoResico"
+              (guardado)="onResicoGuardado($event)"
+              (atras)="back()"
+            />
+          }
+          @case ('sueldos') {
+            <app-step-sueldos
+              [declaracionId]="declaracionId"
+              [initial]="d.ingresoSueldos"
+              (guardado)="onSueldosGuardado($event)"
+              (atras)="back()"
+            />
+          }
+          @case ('actividad') {
+            <app-step-actividad
+              [declaracionId]="declaracionId"
+              [initial]="d.ingresoActividadEmpresarial"
+              (guardado)="onActividadGuardado($event)"
+              (atras)="back()"
+            />
+          }
+          @case ('arrendamiento') {
+            <app-step-arrendamiento
+              [declaracionId]="declaracionId"
+              [initial]="d.ingresoArrendamiento"
+              (guardado)="onArrendamientoGuardado($event)"
+              (atras)="back()"
+            />
+          }
+          @case ('deducciones') {
+            <app-step-deducciones
+              [declaracionId]="declaracionId"
+              [initial]="d.deduccionesPersonales"
+              [ingresoTotalEstimado]="
+                (d.ingresoResico?.ingresoAnual ?? 0) +
+                (d.ingresoSueldos?.ingresoGravado ?? 0) +
+                (d.ingresoActividadEmpresarial?.ingresosCobrados ?? 0) +
+                (d.ingresoArrendamiento?.ingresosCobrados ?? 0)
+              "
+              (guardado)="onDeduccionesGuardadas($event)"
+              (atras)="back()"
+            />
+          }
+          @case ('revision') {
+            <app-step-revision
+              [declaracionId]="declaracionId"
+              [detalle]="d"
+              [resultado]="resultado()"
+              [desactualizado]="desactualizado()"
+              (editarPaso)="goToStepId($event)"
+              (calculado)="onCalculado($event)"
+              (atras)="back()"
+            />
+          }
+        }
+      </div>
+    </div>
+  </div>
+}

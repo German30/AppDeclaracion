@@ -1,0 +1,30 @@
+<form class="step-panel" [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+  <div class="step-panel__header">
+    <h2 class="step-panel__title">Sueldos y salarios</h2>
+    <p class="step-panel__description">
+      Toma estos datos de tu constancia anual de retenciones (o suma tus CFDI de nómina del ejercicio).
+    </p>
+  </div>
+
+  <div class="step-panel__body">
+    <div class="field-row">
+      <app-money-field
+        label="Ingreso gravado del ejercicio"
+        formControlName="ingresoGravado"
+        helper="Suma de tus percepciones gravadas de todo el año."
+        [errorText]="form.controls.ingresoGravado.invalid ? 'Captura un monto válido.' : null"
+      />
+      <app-money-field
+        label="ISR retenido por tu patrón"
+        formControlName="isrRetenido"
+        helper="Lo que tu(s) patrón(es) ya te retuvieron durante el año."
+        [errorText]="form.controls.isrRetenido.invalid ? 'Captura un monto válido.' : null"
+      />
+    </div>
+  </div>
+
+  <div class="step-panel__footer">
+    <button appButton variant="ghost" type="button" (click)="atras.emit()">Atrás</button>
+    <button appButton variant="primary" type="submit" [loading]="guardando()">Guardar y continuar</button>
+  </div>
+</form>

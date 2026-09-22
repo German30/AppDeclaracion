@@ -1,0 +1,45 @@
+<div class="step-panel">
+  <div class="step-panel__header">
+    <h2 class="step-panel__title">¿Qué tipo de ingresos tuviste en el ejercicio?</h2>
+    <p class="step-panel__description">
+      Selecciona todos los que apliquen. Puedes combinar más de uno: por ejemplo, sueldos y
+      arrendamiento en el mismo año.
+    </p>
+  </div>
+
+  <div class="regimenes-grid">
+    @for (id of opciones; track id) {
+      <button
+        type="button"
+        class="regimen-option"
+        [class.selected]="estaSeleccionado(id)"
+        (click)="alternar(id)"
+        [attr.aria-pressed]="estaSeleccionado(id)"
+      >
+        <span class="regimen-option__check" aria-hidden="true">
+          @if (estaSeleccionado(id)) {
+            <app-icon name="check" [size]="12" [strokeWidth]="3" />
+          }
+        </span>
+        <span class="regimen-option__icon"><app-icon [name]="icono(id)" [size]="20" [strokeWidth]="1.5" /></span>
+        <span class="regimen-option__text">
+          <span class="regimen-option__title">{{ info[id].titulo }}</span>
+          <span class="regimen-option__desc">{{ info[id].descripcion }}</span>
+        </span>
+      </button>
+    }
+  </div>
+
+  <div class="step-panel__footer">
+    <span class="regimenes-count">
+      @if (seleccion().size === 0) {
+        Elige al menos un régimen para continuar.
+      } @else {
+        {{ seleccion().size }} régimen(es) seleccionado(s)
+      }
+    </span>
+    <button appButton variant="primary" [disabled]="seleccion().size === 0" (click)="continuar()">
+      Continuar
+    </button>
+  </div>
+</div>

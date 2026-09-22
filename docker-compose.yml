@@ -1,0 +1,19 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: appdeclaracion-web
+    restart: unless-stopped
+    ports:
+      - "4200:80"
+    environment:
+      # No trailing slash — see nginx/default.conf.template for why.
+      # Defaults to the backend's own docker-compose port (5000) reached
+      # through the host. Override in a .env file or `API_UPSTREAM=... docker
+      # compose up` to point at a shared-network service name instead.
+      API_UPSTREAM: ${API_UPSTREAM:-http://host.docker.internal:5000}
+    extra_hosts:
+      # Makes host.docker.internal resolve on Linux too (Docker Desktop on
+      # Windows/Mac already provides it).
+      - "host.docker.internal:host-gateway"

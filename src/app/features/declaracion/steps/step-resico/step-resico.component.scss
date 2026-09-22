@@ -1,0 +1,56 @@
+.resico-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.resico-grid__head {
+  display: grid;
+  grid-template-columns: 96px 1fr 1fr;
+  gap: var(--space-3);
+  padding: 0 var(--space-1);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+
+  @media (max-width: 560px) {
+    display: none;
+  }
+}
+
+.resico-grid__row {
+  display: grid;
+  grid-template-columns: 96px 1fr 1fr;
+  gap: var(--space-3);
+  align-items: center;
+  padding: var(--space-1);
+  border-radius: var(--radius-md);
+
+  &:hover {
+    background: var(--surface-sunken);
+  }
+
+  @media (max-width: 560px) {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+  }
+}
+
+.resico-grid__month {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--text-secondary);
+
+  @media (max-width: 560px) {
+    grid-column: 1 / -1;
+    padding-top: var(--space-2);
+  }
+}
+
+.muted {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-regular);
+  color: var(--text-tertiary);
+}

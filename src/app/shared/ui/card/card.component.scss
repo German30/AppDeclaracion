@@ -1,0 +1,24 @@
+@use '../../../../styles/mixins';
+
+:host {
+  @include mixins.card;
+  display: block;
+}
+
+:host.padded {
+  padding: var(--space-6);
+}
+
+:host.interactive {
+  cursor: pointer;
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+
+  &:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+}

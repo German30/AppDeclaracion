@@ -1,0 +1,63 @@
+<form class="step-panel" [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+  <div class="step-panel__header">
+    <h2 class="step-panel__title">Actividad empresarial y profesional</h2>
+    <p class="step-panel__description">
+      Ingresos por honorarios u otra actividad empresarial, junto con las deducciones autorizadas que
+      puedas comprobar.
+    </p>
+  </div>
+
+  <div class="step-panel__body">
+    <div class="field-row">
+      <app-money-field
+        label="Ingresos cobrados en el ejercicio"
+        formControlName="ingresosCobrados"
+        [errorText]="form.controls.ingresosCobrados.invalid ? 'Captura un monto válido.' : null"
+      />
+      <app-money-field
+        label="Pagos provisionales ya realizados"
+        formControlName="pagosProvisionalesRealizados"
+        helper="Lo que ya pagaste en tus declaraciones provisionales mensuales."
+      />
+    </div>
+
+    <div formArrayName="deducciones" class="deducciones-list">
+      <p class="deducciones-list__title">Deducciones autorizadas</p>
+      @for (grupo of deducciones.controls; track grupo; let i = $index) {
+        <div class="deduccion-row" [formGroupName]="i">
+          <app-text-field
+            label="Concepto"
+            placeholder="Ej. Renta de oficina, insumos, software…"
+            [maxlength]="200"
+            formControlName="concepto"
+            [errorText]="grupo.get('concepto')?.invalid ? 'Describe el concepto (máx. 200 caracteres).' : null"
+          />
+          <app-money-field
+            label="Monto"
+            formControlName="monto"
+            [errorText]="grupo.get('monto')?.invalid ? 'Captura un monto válido.' : null"
+          />
+          <button type="button" class="deduccion-row__remove" (click)="quitarDeduccion(i)" aria-label="Eliminar deducción">
+            <app-icon name="trash" [size]="16" />
+          </button>
+        </div>
+      }
+      <button type="button" class="add-row-btn" (click)="agregarDeduccion()">
+        <app-icon name="plus" [size]="15" />
+        Agregar deducción
+      </button>
+    </div>
+  </div>
+
+  @if (deducciones.length > 0) {
+    <div class="step-panel__total">
+      <span>Total deducciones</span>
+      <strong>{{ totalDeducciones | currency: 'MXN' }}</strong>
+    </div>
+  }
+
+  <div class="step-panel__footer">
+    <button appButton variant="ghost" type="button" (click)="atras.emit()">Atrás</button>
+    <button appButton variant="primary" type="submit" [loading]="guardando()">Guardar y continuar</button>
+  </div>
+</form>

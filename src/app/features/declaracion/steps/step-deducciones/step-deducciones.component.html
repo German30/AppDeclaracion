@@ -1,0 +1,54 @@
+<form class="step-panel" [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+  <div class="step-panel__header">
+    <h2 class="step-panel__title">Deducciones personales</h2>
+    <p class="step-panel__description">
+      Gastos médicos, colegiaturas, donativos y otros conceptos del Artículo 151 que puedas comprobar.
+      Este paso es opcional.
+    </p>
+  </div>
+
+  <app-alert tone="info">
+    Estimado del tope general: <strong>{{ topeEstimado() | currency: 'MXN' }}</strong> (el menor entre 5
+    UMA anuales y el 15% de tu ingreso total). El tope real se calcula al obtener tu resultado.
+  </app-alert>
+
+  <div formArrayName="deducciones" class="deducciones-list">
+    @for (grupo of deducciones.controls; track grupo; let i = $index) {
+      <div class="deduccion-row" [formGroupName]="i">
+        <app-select-field
+          label="Concepto"
+          placeholder="Selecciona un tipo"
+          [options]="opcionesTipo"
+          formControlName="tipo"
+          [errorText]="grupo.get('tipo')?.touched && grupo.get('tipo')?.invalid ? 'Elige un tipo de deducción.' : null"
+        />
+        <app-money-field
+          label="Monto"
+          formControlName="monto"
+          [errorText]="grupo.get('monto')?.touched && grupo.get('monto')?.invalid ? 'Captura un monto válido.' : null"
+        />
+        <button type="button" class="deduccion-row__remove" (click)="quitar(i)" aria-label="Eliminar deducción">
+          <app-icon name="trash" [size]="16" />
+        </button>
+      </div>
+    }
+    <button type="button" class="add-row-btn" (click)="agregar()">
+      <app-icon name="plus" [size]="15" />
+      Agregar deducción
+    </button>
+  </div>
+
+  @if (deducciones.length > 0) {
+    <div class="step-panel__total">
+      <span>Total deducciones personales</span>
+      <strong>{{ total | currency: 'MXN' }}</strong>
+    </div>
+  }
+
+  <div class="step-panel__footer">
+    <button appButton variant="ghost" type="button" (click)="atras.emit()">Atrás</button>
+    <button appButton variant="primary" type="submit" [loading]="guardando()">
+      {{ deducciones.length === 0 ? 'Continuar sin deducciones' : 'Guardar y continuar' }}
+    </button>
+  </div>
+</form>

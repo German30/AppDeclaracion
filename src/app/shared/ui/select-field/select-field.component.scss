@@ -1,0 +1,21 @@
+@use '../../../../styles/field';
+
+.field__control--select {
+  &::after {
+    content: '';
+    position: absolute;
+    right: var(--space-3);
+    width: 9px;
+    height: 9px;
+    border-right: 1.5px solid var(--text-tertiary);
+    border-bottom: 1.5px solid var(--text-tertiary);
+    transform: rotate(45deg) translateY(-3px);
+    pointer-events: none;
+  }
+
+  select {
+    appearance: none;
+    padding-right: var(--space-8);
+    cursor: pointer;
+  }
+}

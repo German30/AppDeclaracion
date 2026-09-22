@@ -1,0 +1,39 @@
+<form class="step-panel" [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+  <div class="step-panel__header">
+    <h2 class="step-panel__title">RESICO — ingresos mensuales</h2>
+    <p class="step-panel__description">
+      Captura lo cobrado y la retención de ISR de cada mes con actividad. Deja en $0.00 los meses sin
+      ingresos.
+    </p>
+  </div>
+
+  <app-alert tone="info">
+    La tasa de RESICO se calcula por mes según tu ingreso mensual (de 1.0% a 2.5%), no sobre el total
+    anual.
+  </app-alert>
+
+  <div class="resico-grid" formArrayName="meses">
+    <div class="resico-grid__head">
+      <span>Mes</span>
+      <span>Ingreso cobrado</span>
+      <span>Retención de ISR</span>
+    </div>
+    @for (mes of meses; track mes.valor; let i = $index) {
+      <div class="resico-grid__row" [formGroupName]="i">
+        <span class="resico-grid__month">{{ mes.nombre }}</span>
+        <app-money-field formControlName="ingresoCobrado" />
+        <app-money-field formControlName="retencionIsr" />
+      </div>
+    }
+  </div>
+
+  <div class="step-panel__total">
+    <span>Total anual capturado</span>
+    <strong>{{ totalIngreso | currency: 'MXN' }} <span class="muted">/ retención {{ totalRetencion | currency: 'MXN' }}</span></strong>
+  </div>
+
+  <div class="step-panel__footer">
+    <button appButton variant="ghost" type="button" (click)="atras.emit()">Atrás</button>
+    <button appButton variant="primary" type="submit" [loading]="guardando()">Guardar y continuar</button>
+  </div>
+</form>

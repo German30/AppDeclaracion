@@ -1,0 +1,28 @@
+<div class="field field--money" [class.field--error]="errorText() && touched()" [class.field--disabled]="disabled()">
+  @if (label()) {
+    <label [for]="id" class="field__label">{{ label() }}</label>
+  }
+  <div class="field__control">
+    <span class="field__currency" aria-hidden="true">$</span>
+    <input
+      [id]="id"
+      type="text"
+      inputmode="decimal"
+      class="has-icon"
+      [placeholder]="placeholder()"
+      [disabled]="disabled()"
+      [value]="displayValue()"
+      (focus)="handleFocus()"
+      (input)="handleInput($any($event.target).value)"
+      (blur)="handleBlur()"
+      [attr.aria-invalid]="errorText() && touched() ? 'true' : null"
+      [attr.aria-describedby]="errorText() || helper() ? id + '-hint' : null"
+    />
+    <span class="field__suffix" aria-hidden="true">MXN</span>
+  </div>
+  @if (errorText() && touched()) {
+    <p class="field__hint field__hint--error" [id]="id + '-hint'">{{ errorText() }}</p>
+  } @else if (helper()) {
+    <p class="field__hint" [id]="id + '-hint'">{{ helper() }}</p>
+  }
+</div>

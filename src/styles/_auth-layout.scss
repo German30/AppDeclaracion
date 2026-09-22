@@ -1,0 +1,215 @@
+.auth-shell {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.auth-shell__aside {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-12) var(--space-12);
+  background: var(--surface-inverse);
+  color: var(--text-inverse);
+  position: relative;
+  overflow: hidden;
+
+  @media (max-width: 900px) {
+    display: none;
+  }
+}
+
+.auth-shell__aside::before {
+  content: '';
+  position: absolute;
+  inset: -20% -20% auto auto;
+  width: 60%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, var(--a-500), transparent 70%);
+  opacity: 0.35;
+  filter: blur(40px);
+}
+
+.auth-shell__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-md);
+  position: relative;
+}
+
+.auth-shell__brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  background: var(--a-500);
+  color: #fff;
+}
+
+.auth-shell__pitch {
+  position: relative;
+  max-width: 26rem;
+}
+
+.auth-shell__pitch h1 {
+  font-size: var(--fs-2xl);
+  line-height: var(--lh-tight);
+  letter-spacing: -0.01em;
+  margin-bottom: var(--space-4);
+}
+
+.auth-shell__pitch p {
+  font-size: var(--fs-sm);
+  color: var(--n-300);
+  line-height: var(--lh-relaxed);
+}
+
+.auth-shell__features {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.auth-shell__feature {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-sm);
+  color: var(--n-200);
+}
+
+.auth-shell__feature app-icon {
+  color: var(--a-300);
+  flex-shrink: 0;
+}
+
+.auth-shell__foot {
+  position: relative;
+  font-size: var(--fs-xs);
+  color: var(--n-400);
+}
+
+.auth-shell__main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+}
+
+.auth-form {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.auth-form__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-bottom: var(--space-1);
+}
+
+.auth-form__brand-mobile {
+  display: none;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: var(--fw-semibold);
+  margin-bottom: var(--space-6);
+
+  @media (max-width: 900px) {
+    display: inline-flex;
+  }
+}
+
+.auth-form__brand-mobile .mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-md);
+  background: var(--a-500);
+  color: #fff;
+}
+
+.auth-form__title {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-semibold);
+  letter-spacing: -0.01em;
+}
+
+.auth-form__subtitle {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+
+.auth-form__fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.auth-form__footer {
+  text-align: center;
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+
+.auth-form__footer a {
+  color: var(--a-600);
+  font-weight: var(--fw-medium);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.password-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.password-requirements {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-1) var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: var(--surface-sunken);
+  border-radius: var(--radius-md);
+}
+
+.password-requirements li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-2xs);
+  color: var(--text-tertiary);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.password-requirements li app-icon {
+  color: var(--text-disabled);
+}
+
+.password-requirements li.met {
+  color: var(--success-700);
+}
+
+.password-requirements li.met app-icon {
+  color: var(--success-500);
+}

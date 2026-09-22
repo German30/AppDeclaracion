@@ -1,0 +1,152 @@
+<div class="step-panel">
+  <div class="step-panel__header">
+    <h2 class="step-panel__title">Revisión y cálculo</h2>
+    <p class="step-panel__description">
+      Confirma tus datos antes de calcular. Puedes volver a cualquier paso para corregir algo.
+    </p>
+  </div>
+
+  @if (desactualizado()) {
+    <app-alert tone="warning" title="Tus datos cambiaron">
+      Edita tus regímenes cuando quieras, pero recuerda volver a calcular para ver un resultado
+      actualizado.
+    </app-alert>
+  }
+
+  <div class="summary-list">
+    @if (detalle().ingresoResico; as r) {
+      <div class="summary-card">
+        <div class="summary-card__head">
+          <span class="summary-card__title">{{ info.resico.titulo }}</span>
+          <button type="button" class="summary-card__edit" (click)="editarPaso.emit('resico')">
+            <app-icon name="edit" [size]="13" /> Editar
+          </button>
+        </div>
+        <div class="summary-card__rows">
+          <div class="summary-row"><span>Ingreso anual</span><strong>{{ r.ingresoAnual | currency: 'MXN' }}</strong></div>
+          <div class="summary-row"><span>Retención anual</span><strong>{{ r.retencionAnual | currency: 'MXN' }}</strong></div>
+        </div>
+      </div>
+    }
+
+    @if (detalle().ingresoSueldos; as s) {
+      <div class="summary-card">
+        <div class="summary-card__head">
+          <span class="summary-card__title">{{ info.sueldos.titulo }}</span>
+          <button type="button" class="summary-card__edit" (click)="editarPaso.emit('sueldos')">
+            <app-icon name="edit" [size]="13" /> Editar
+          </button>
+        </div>
+        <div class="summary-card__rows">
+          <div class="summary-row"><span>Ingreso gravado</span><strong>{{ s.ingresoGravado | currency: 'MXN' }}</strong></div>
+          <div class="summary-row"><span>ISR retenido</span><strong>{{ s.isrRetenido | currency: 'MXN' }}</strong></div>
+        </div>
+      </div>
+    }
+
+    @if (detalle().ingresoActividadEmpresarial; as a) {
+      <div class="summary-card">
+        <div class="summary-card__head">
+          <span class="summary-card__title">{{ info.actividad.titulo }}</span>
+          <button type="button" class="summary-card__edit" (click)="editarPaso.emit('actividad')">
+            <app-icon name="edit" [size]="13" /> Editar
+          </button>
+        </div>
+        <div class="summary-card__rows">
+          <div class="summary-row"><span>Ingresos cobrados</span><strong>{{ a.ingresosCobrados | currency: 'MXN' }}</strong></div>
+          <div class="summary-row"><span>Deducciones ({{ a.deducciones.length }})</span><strong>{{ a.totalDeducciones | currency: 'MXN' }}</strong></div>
+          <div class="summary-row"><span>Pagos provisionales</span><strong>{{ a.pagosProvisionalesRealizados | currency: 'MXN' }}</strong></div>
+        </div>
+      </div>
+    }
+
+    @if (detalle().ingresoArrendamiento; as ar) {
+      <div class="summary-card">
+        <div class="summary-card__head">
+          <span class="summary-card__title">{{ info.arrendamiento.titulo }}</span>
+          <button type="button" class="summary-card__edit" (click)="editarPaso.emit('arrendamiento')">
+            <app-icon name="edit" [size]="13" /> Editar
+          </button>
+        </div>
+        <div class="summary-card__rows">
+          <div class="summary-row"><span>Ingresos cobrados</span><strong>{{ ar.ingresosCobrados | currency: 'MXN' }}</strong></div>
+          <div class="summary-row"><span>Tipo de deducción</span><strong>{{ labelTipoArrendamiento[ar.tipoDeduccion] }}</strong></div>
+          @if (ar.tipoDeduccion === 'Real') {
+            <div class="summary-row"><span>Deducciones reales</span><strong>{{ ar.totalDeduccionesReales | currency: 'MXN' }}</strong></div>
+          }
+          <div class="summary-row"><span>Pagos provisionales</span><strong>{{ ar.pagosProvisionalesRealizados | currency: 'MXN' }}</strong></div>
+        </div>
+      </div>
+    }
+
+    <div class="summary-card">
+      <div class="summary-card__head">
+        <span class="summary-card__title">Deducciones personales</span>
+        <button type="button" class="summary-card__edit" (click)="editarPaso.emit('deducciones')">
+          <app-icon name="edit" [size]="13" /> Editar
+        </button>
+      </div>
+      @if (detalle().deduccionesPersonales.length === 0) {
+        <p class="summary-card__empty">No capturaste deducciones personales.</p>
+      } @else {
+        <div class="summary-card__rows">
+          @for (d of detalle().deduccionesPersonales; track d.tipo) {
+            <div class="summary-row"><span>{{ labelDeduccionPersonal[d.tipo] }}</span><strong>{{ d.monto | currency: 'MXN' }}</strong></div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="calcular-box">
+    <div>
+      <p class="calcular-box__title">Listo para calcular</p>
+      <p class="calcular-box__desc">Aplicamos la tarifa anual del ISR y las tasas RESICO vigentes.</p>
+    </div>
+    <button appButton variant="primary" size="lg" [loading]="calculando()" (click)="calcular()">
+      <app-icon name="calculator" [size]="16" />
+      {{ resultado() ? 'Volver a calcular' : 'Calcular declaración' }}
+    </button>
+  </div>
+
+  @if (resultado(); as res) {
+    <div class="resultado" [class.stale]="desactualizado()">
+      <div class="resultado__hero" [class.favor]="res.esSaldoAFavor" [class.cargo]="!res.esSaldoAFavor">
+        <span class="resultado__label">
+          {{ res.esSaldoAFavor ? 'Saldo a tu favor' : 'Saldo a cargo' }}
+        </span>
+        <span class="resultado__amount">{{ (res.esSaldoAFavor ? -res.saldoTotal : res.saldoTotal) | currency: 'MXN' }}</span>
+        <span class="resultado__date">Calculado el {{ res.fechaCalculo | date: 'd MMM yyyy, HH:mm' }}</span>
+      </div>
+
+      <div class="resultado__breakdown">
+        <div class="breakdown-group">
+          <p class="breakdown-group__title">RESICO (cedular)</p>
+          <div class="summary-row"><span>ISR causado</span><strong>{{ res.isrResicoCausado | currency: 'MXN' }}</strong></div>
+          <div class="summary-row"><span>ISR retenido</span><strong>{{ res.isrResicoRetenido | currency: 'MXN' }}</strong></div>
+          <div class="summary-row total"><span>Saldo RESICO</span><strong>{{ res.saldoResico | currency: 'MXN' }}</strong></div>
+        </div>
+
+        <div class="breakdown-group">
+          <p class="breakdown-group__title">Tarifa anual (sueldos, actividad, arrendamiento)</p>
+          <div class="summary-row"><span>Ingreso acumulable</span><strong>{{ res.ingresoAcumulableTotal | currency: 'MXN' }}</strong></div>
+          <div class="summary-row"><span>Deducciones personales aplicadas</span><strong>{{ res.deduccionesPersonalesAplicadas | currency: 'MXN' }}</strong></div>
+          <div class="summary-row"><span>Base gravable</span><strong>{{ res.baseGravableAcumulable | currency: 'MXN' }}</strong></div>
+          <div class="summary-row"><span>ISR causado</span><strong>{{ res.isrCausadoAcumulable | currency: 'MXN' }}</strong></div>
+          <div class="summary-row"><span>Pagos anticipados</span><strong>{{ res.pagosAnticipadosAcumulable | currency: 'MXN' }}</strong></div>
+          <div class="summary-row total"><span>Saldo acumulable</span><strong>{{ res.saldoAcumulable | currency: 'MXN' }}</strong></div>
+        </div>
+      </div>
+
+      <app-alert tone="info">
+        El tope de deducciones personales usa un UMA de referencia fijo y es una herramienta de apoyo:
+        no sustituye la asesoría de un contador ni tu declaración presentada ante el SAT.
+      </app-alert>
+    </div>
+  }
+
+  <div class="step-panel__footer">
+    <button appButton variant="ghost" type="button" (click)="atras.emit()">Atrás</button>
+    <span></span>
+  </div>
+</div>

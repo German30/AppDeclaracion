@@ -1,0 +1,83 @@
+<div class="auth-shell">
+  <aside class="auth-shell__aside">
+    <div class="auth-shell__brand">
+      <span class="auth-shell__brand-mark"><app-icon name="calculator" [size]="18" /></span>
+      Declaración Anual
+    </div>
+
+    <div class="auth-shell__pitch">
+      <h1>Tu ISR anual, capturado sin adivinar.</h1>
+      <p>
+        Concentra tus ingresos por RESICO, sueldos, actividad empresarial y arrendamiento en un solo
+        lugar y obtén tu saldo a favor o a cargo con la tarifa vigente del SAT.
+      </p>
+      <div class="auth-shell__features">
+        <div class="auth-shell__feature">
+          <app-icon name="shield-check" [size]="16" />
+          Validaciones que evitan errores antes de guardar
+        </div>
+        <div class="auth-shell__feature">
+          <app-icon name="clipboard-list" [size]="16" />
+          Un asistente paso a paso por régimen fiscal
+        </div>
+        <div class="auth-shell__feature">
+          <app-icon name="calculator" [size]="16" />
+          Cálculo con la tarifa anual y tablas RESICO vigentes
+        </div>
+      </div>
+    </div>
+
+    <p class="auth-shell__foot">Herramienta de apoyo — no sustituye la asesoría de un contador.</p>
+  </aside>
+
+  <main class="auth-shell__main">
+    <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="auth-form__brand-mobile">
+        <span class="mark"><app-icon name="calculator" [size]="16" /></span>
+        Declaración Anual
+      </div>
+
+      <div class="auth-form__header">
+        <h2 class="auth-form__title">Inicia sesión</h2>
+        <p class="auth-form__subtitle">Continúa con tu declaración anual.</p>
+      </div>
+
+      @if (sesionExpirada) {
+        <app-alert tone="info">Tu sesión anterior expiró. Vuelve a iniciar sesión para continuar.</app-alert>
+      }
+
+      @if (errorMessage()) {
+        <app-alert tone="danger">{{ errorMessage() }}</app-alert>
+      }
+
+      <div class="auth-form__fields">
+        <app-text-field
+          label="Correo electrónico"
+          type="email"
+          icon="mail"
+          placeholder="tucorreo@ejemplo.com"
+          autocomplete="email"
+          formControlName="email"
+          [errorText]="form.controls.email.errors ? 'Ingresa un correo válido.' : null"
+        />
+        <app-text-field
+          label="Contraseña"
+          type="password"
+          icon="lock"
+          placeholder="••••••••"
+          autocomplete="current-password"
+          formControlName="password"
+          [errorText]="form.controls.password.errors ? 'Ingresa tu contraseña.' : null"
+        />
+      </div>
+
+      <button appButton variant="primary" size="lg" [fullWidth]="true" type="submit" [loading]="loading()">
+        Iniciar sesión
+      </button>
+
+      <p class="auth-form__footer">
+        ¿Aún no tienes cuenta? <a routerLink="/registro">Regístrate</a>
+      </p>
+    </form>
+  </main>
+</div>

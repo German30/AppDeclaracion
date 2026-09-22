@@ -1,0 +1,40 @@
+<div class="field" [class.field--error]="errorText() && touched()" [class.field--disabled]="disabled()">
+  @if (label()) {
+    <label [for]="id" class="field__label">{{ label() }}</label>
+  }
+  <div class="field__control">
+    @if (icon()) {
+      <app-icon class="field__icon" [name]="icon()!" [size]="16" />
+    }
+    <input
+      [id]="id"
+      [type]="effectiveType"
+      [placeholder]="placeholder()"
+      [autocomplete]="autocomplete()"
+      [attr.maxlength]="maxlength()"
+      [disabled]="disabled()"
+      [value]="value()"
+      [class.has-icon]="!!icon()"
+      [class.has-toggle]="type() === 'password'"
+      (input)="handleInput($any($event.target).value)"
+      (blur)="handleBlur()"
+      [attr.aria-invalid]="errorText() && touched() ? 'true' : null"
+      [attr.aria-describedby]="errorText() || helper() ? id + '-hint' : null"
+    />
+    @if (type() === 'password') {
+      <button
+        type="button"
+        class="field__toggle"
+        (click)="togglePasswordVisibility()"
+        [attr.aria-label]="showPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+      >
+        <app-icon [name]="showPassword() ? 'eye-off' : 'eye'" [size]="16" />
+      </button>
+    }
+  </div>
+  @if (errorText() && touched()) {
+    <p class="field__hint field__hint--error" [id]="id + '-hint'">{{ errorText() }}</p>
+  } @else if (helper()) {
+    <p class="field__hint" [id]="id + '-hint'">{{ helper() }}</p>
+  }
+</div>

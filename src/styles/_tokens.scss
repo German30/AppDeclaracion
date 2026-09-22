@@ -1,0 +1,172 @@
+// Design tokens — single source of truth for the visual system.
+// Restrained color strategy: neutrals + one accent, semantic colors reserved
+// for state (success / warning / danger / info), never decoration.
+
+:root {
+  // ---- Neutrals (cool, slightly blue-tinted — fits a fiscal/finance tool) ----
+  --n-0: #ffffff;
+  --n-50: #f7f8fb;
+  --n-100: #eef0f5;
+  --n-150: #e4e7ee;
+  --n-200: #d9dce5;
+  --n-300: #c1c6d4;
+  --n-400: #9aa1b5;
+  --n-500: #717893;
+  --n-600: #535a72;
+  --n-700: #3b4055;
+  --n-800: #262a3a;
+  --n-900: #171a26;
+  --n-950: #0d0f18;
+
+  // ---- Accent (primary actions, current selection, links) ----
+  --a-50: #eef0ff;
+  --a-100: #e0e3fe;
+  --a-200: #c3c8fd;
+  --a-300: #9ea5fa;
+  --a-400: #7a7ff4;
+  --a-500: #5457ea;
+  --a-600: #4140d1;
+  --a-700: #3532a8;
+  --a-800: #2c2a85;
+  --a-900: #24236a;
+
+  // ---- Semantic ----
+  --success-50: #eafcf3;
+  --success-500: #16a35f;
+  --success-600: #0f8049;
+  --success-700: #0c623a;
+
+  --warning-50: #fff8ec;
+  --warning-500: #c17a12;
+  --warning-600: #9c620d;
+  --warning-700: #7a4c0a;
+
+  --danger-50: #fef2f2;
+  --danger-500: #dc2626;
+  --danger-600: #b91c1c;
+  --danger-700: #921616;
+
+  --info-50: var(--a-50);
+  --info-500: var(--a-500);
+  --info-600: var(--a-600);
+
+  // ---- Surface roles (theme-mapped below) ----
+  --surface-canvas: var(--n-50);
+  --surface-raised: var(--n-0);
+  --surface-sunken: var(--n-100);
+  --surface-overlay: var(--n-0);
+  --surface-inverse: var(--n-900);
+
+  --border-subtle: var(--n-150);
+  --border-default: var(--n-200);
+  --border-strong: var(--n-300);
+
+  --text-primary: var(--n-900);
+  --text-secondary: var(--n-600);
+  --text-tertiary: var(--n-500);
+  --text-disabled: var(--n-400);
+  --text-inverse: var(--n-0);
+  --text-on-accent: var(--n-0);
+
+  --focus-ring: var(--a-500);
+
+  // ---- Typography ----
+  --font-sans:
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --fs-2xs: 0.6875rem; // 11
+  --fs-xs: 0.75rem; // 12
+  --fs-sm: 0.8125rem; // 13
+  --fs-base: 0.875rem; // 14
+  --fs-md: 1rem; // 16
+  --fs-lg: 1.125rem; // 18
+  --fs-xl: 1.375rem; // 22
+  --fs-2xl: 1.75rem; // 28
+  --fs-3xl: 2.25rem; // 36
+
+  --lh-tight: 1.2;
+  --lh-snug: 1.35;
+  --lh-normal: 1.5;
+  --lh-relaxed: 1.65;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  // ---- Spacing (4px base) ----
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+
+  // ---- Radius ----
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-full: 999px;
+
+  // ---- Shadow (offset + soft blur, never a flat colored halo) ----
+  --shadow-sm: 0 1px 2px rgba(13, 15, 24, 0.06), 0 1px 1px rgba(13, 15, 24, 0.04);
+  --shadow-md: 0 6px 16px rgba(13, 15, 24, 0.08), 0 2px 6px rgba(13, 15, 24, 0.05);
+  --shadow-lg: 0 16px 40px rgba(13, 15, 24, 0.14), 0 4px 10px rgba(13, 15, 24, 0.06);
+  --shadow-focus: 0 0 0 3px rgba(84, 87, 234, 0.28);
+
+  // ---- Motion ----
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 120ms;
+  --duration-base: 180ms;
+  --duration-slow: 260ms;
+
+  // ---- Layout ----
+  --content-max: 72rem;
+  --form-max: 40rem;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface-canvas: var(--n-950);
+    --surface-raised: var(--n-900);
+    --surface-sunken: var(--n-800);
+    --surface-overlay: var(--n-800);
+    --surface-inverse: var(--n-50);
+
+    --border-subtle: var(--n-800);
+    --border-default: var(--n-700);
+    --border-strong: var(--n-600);
+
+    --text-primary: var(--n-50);
+    --text-secondary: var(--n-300);
+    --text-tertiary: var(--n-400);
+    --text-disabled: var(--n-600);
+    --text-inverse: var(--n-900);
+
+    --a-50: #191b3a;
+    --success-50: #0d2419;
+    --warning-50: #2a1f0c;
+    --danger-50: #2a1414;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 1px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.55), 0 6px 14px rgba(0, 0, 0, 0.3);
+
+    color-scheme: dark;
+  }
+}

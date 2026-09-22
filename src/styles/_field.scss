@@ -1,0 +1,107 @@
+// Shared visual language for every form control (text/money/select fields).
+// Imported by each field component's own stylesheet.
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.field__label {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  color: var(--text-secondary);
+}
+
+.field__control {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.field__icon {
+  position: absolute;
+  left: var(--space-3);
+  color: var(--text-tertiary);
+  pointer-events: none;
+}
+
+.field__control input,
+.field__control select {
+  width: 100%;
+  height: 42px;
+  padding: 0 var(--space-3);
+  background: var(--surface-raised);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-md);
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
+
+  &::placeholder {
+    color: var(--text-tertiary);
+  }
+
+  &:hover:not(:disabled) {
+    border-color: var(--border-strong);
+  }
+
+  &:focus-visible {
+    outline: none;
+    border-color: var(--a-500);
+    box-shadow: var(--shadow-focus);
+  }
+
+  &:disabled {
+    background: var(--surface-sunken);
+    color: var(--text-disabled);
+    cursor: not-allowed;
+  }
+}
+
+.field__control input.has-icon {
+  padding-left: var(--space-8);
+}
+
+.field__control input.has-toggle {
+  padding-right: var(--space-8);
+}
+
+.field__toggle {
+  position: absolute;
+  right: var(--space-3);
+  display: inline-flex;
+  color: var(--text-tertiary);
+  border-radius: var(--radius-sm);
+
+  &:hover {
+    color: var(--text-secondary);
+  }
+}
+
+.field__hint {
+  font-size: var(--fs-xs);
+  color: var(--text-tertiary);
+  line-height: var(--lh-snug);
+}
+
+.field__hint--error {
+  color: var(--danger-600);
+}
+
+.field--error .field__control input,
+.field--error .field__control select {
+  border-color: var(--danger-500);
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.18);
+  }
+}
+
+.field--disabled .field__label {
+  color: var(--text-disabled);
+}

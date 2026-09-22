@@ -1,0 +1,102 @@
+<div class="auth-shell">
+  <aside class="auth-shell__aside">
+    <div class="auth-shell__brand">
+      <span class="auth-shell__brand-mark"><app-icon name="calculator" [size]="18" /></span>
+      Declaración Anual
+    </div>
+
+    <div class="auth-shell__pitch">
+      <h1>Crea tu cuenta y empieza tu declaración.</h1>
+      <p>
+        Un solo lugar para capturar RESICO, sueldos, actividad empresarial y arrendamiento, y calcular
+        tu ISR anual con la tarifa vigente.
+      </p>
+      <div class="auth-shell__features">
+        <div class="auth-shell__feature">
+          <app-icon name="shield-check" [size]="16" />
+          Tus datos se guardan por ejercicio fiscal
+        </div>
+        <div class="auth-shell__feature">
+          <app-icon name="clipboard-list" [size]="16" />
+          Puedes retomar tu captura cuando quieras
+        </div>
+      </div>
+    </div>
+
+    <p class="auth-shell__foot">Herramienta de apoyo — no sustituye la asesoría de un contador.</p>
+  </aside>
+
+  <main class="auth-shell__main">
+    <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="auth-form__brand-mobile">
+        <span class="mark"><app-icon name="calculator" [size]="16" /></span>
+        Declaración Anual
+      </div>
+
+      <div class="auth-form__header">
+        <h2 class="auth-form__title">Crea tu cuenta</h2>
+        <p class="auth-form__subtitle">Toma menos de un minuto.</p>
+      </div>
+
+      @if (errorMessage()) {
+        <app-alert tone="danger">{{ errorMessage() }}</app-alert>
+      }
+
+      <div class="auth-form__fields">
+        <app-text-field
+          label="Nombre completo"
+          icon="user"
+          placeholder="Como aparece en tu identificación"
+          autocomplete="name"
+          formControlName="nombre"
+          [errorText]="campoError('nombre')"
+        />
+        <app-text-field
+          label="Correo electrónico"
+          type="email"
+          icon="mail"
+          placeholder="tucorreo@ejemplo.com"
+          autocomplete="email"
+          formControlName="email"
+          [errorText]="campoError('email')"
+        />
+        <app-text-field
+          label="RFC (opcional)"
+          icon="file-text"
+          placeholder="XAXX010101000"
+          [maxlength]="13"
+          formControlName="rfc"
+          [errorText]="campoError('rfc')"
+          helper="A 13 caracteres para personas físicas. Puedes agregarlo después."
+        />
+
+        <div class="password-field">
+          <app-text-field
+            label="Contraseña"
+            type="password"
+            icon="lock"
+            placeholder="Crea una contraseña segura"
+            autocomplete="new-password"
+            formControlName="password"
+          />
+          <ul class="password-requirements">
+            @for (req of requisitos; track req.clave) {
+              <li [class.met]="!passwordErrors()[req.clave]">
+                <app-icon [name]="!passwordErrors()[req.clave] ? 'check' : 'x'" [size]="12" [strokeWidth]="2.5" />
+                {{ req.texto }}
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+
+      <button appButton variant="primary" size="lg" [fullWidth]="true" type="submit" [loading]="loading()">
+        Crear cuenta
+      </button>
+
+      <p class="auth-form__footer">
+        ¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a>
+      </p>
+    </form>
+  </main>
+</div>

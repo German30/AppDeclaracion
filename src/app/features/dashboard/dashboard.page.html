@@ -1,0 +1,75 @@
+<div class="dashboard">
+  <div class="dashboard__header">
+    <div>
+      <h1 class="dashboard__title">Tus declaraciones</h1>
+      <p class="dashboard__subtitle">Una declaración por ejercicio fiscal, desde {{ 2020 }} hasta {{ anioActual }}.</p>
+    </div>
+
+    @if (!mostrarFormNueva()) {
+      <button appButton variant="primary" (click)="toggleFormNueva()" [disabled]="anosDisponibles().length === 0">
+        <app-icon name="plus" [size]="16" />
+        Nueva declaración
+      </button>
+    }
+  </div>
+
+  @if (mostrarFormNueva()) {
+    <app-card class="new-declaracion">
+      <p class="new-declaracion__label">Elige el ejercicio fiscal a declarar</p>
+      <div class="new-declaracion__row">
+        <app-select-field
+          class="new-declaracion__select"
+          placeholder="Selecciona un año"
+          [options]="anosDisponibles()"
+          [ngModel]="anioSeleccionado()"
+          (ngModelChange)="anioSeleccionado.set($event)"
+        />
+        <button appButton variant="primary" [loading]="creando()" [disabled]="!anioSeleccionado()" (click)="crearDeclaracion()">
+          Crear
+        </button>
+        <button appButton variant="ghost" type="button" (click)="toggleFormNueva()">Cancelar</button>
+      </div>
+      <p class="new-declaracion__hint">Solo se muestran los años sin una declaración existente.</p>
+    </app-card>
+  }
+
+  @if (cargando()) {
+    <div class="declaraciones-grid">
+      @for (i of [1, 2, 3]; track i) {
+        <app-card class="skeleton-card">
+          <app-skeleton width="40%" height="1.5rem" />
+          <app-skeleton width="70%" height="0.85rem" />
+        </app-card>
+      }
+    </div>
+  } @else if (ordenadas().length === 0) {
+    <app-empty-state
+      icon="file-text"
+      title="Aún no tienes declaraciones"
+      description="Crea tu primera declaración anual seleccionando el ejercicio fiscal que quieres capturar."
+    >
+      @if (!mostrarFormNueva()) {
+        <button appButton variant="primary" (click)="toggleFormNueva()">
+          <app-icon name="plus" [size]="16" />
+          Nueva declaración
+        </button>
+      }
+    </app-empty-state>
+  } @else {
+    <div class="declaraciones-grid">
+      @for (declaracion of ordenadas(); track declaracion.id) {
+        <a class="declaracion-card" [routerLink]="['/declaraciones', declaracion.id]">
+          <div class="declaracion-card__top">
+            <span class="declaracion-card__year">{{ declaracion.ejercicio }}</span>
+            <app-badge [tone]="estatusTono(declaracion.estatus)">{{ declaracion.estatus }}</app-badge>
+          </div>
+          <p class="declaracion-card__meta">Creada el {{ declaracion.fechaCreacion | date: 'd MMM yyyy' }}</p>
+          <span class="declaracion-card__cta">
+            Abrir declaración
+            <app-icon name="arrow-right" [size]="14" />
+          </span>
+        </a>
+      }
+    </div>
+  }
+</div>

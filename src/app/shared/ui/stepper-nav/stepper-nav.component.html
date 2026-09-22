@@ -1,0 +1,37 @@
+<ol class="stepper" role="tablist" aria-label="Pasos de la declaración">
+  @for (step of steps(); track step.label; let i = $index; let last = $last) {
+    <li
+      class="step"
+      [class]="'status-' + step.status"
+      [class.clickable]="step.status !== 'upcoming'"
+    >
+      <button
+        type="button"
+        class="step__button"
+        role="tab"
+        [attr.aria-selected]="step.status === 'current'"
+        [disabled]="step.status === 'upcoming'"
+        (click)="select(i, step.status)"
+      >
+        <span class="step__marker">
+          @if (step.status === 'complete') {
+            <app-icon name="check" [size]="14" [strokeWidth]="2.5" />
+          } @else if (step.status === 'invalid') {
+            <app-icon name="alert-circle" [size]="14" [strokeWidth]="2.5" />
+          } @else {
+            {{ i + 1 }}
+          }
+        </span>
+        <span class="step__text">
+          <span class="step__label">{{ step.label }}</span>
+          @if (step.hint) {
+            <span class="step__hint">{{ step.hint }}</span>
+          }
+        </span>
+      </button>
+      @if (!last) {
+        <span class="step__connector" aria-hidden="true"></span>
+      }
+    </li>
+  }
+</ol>

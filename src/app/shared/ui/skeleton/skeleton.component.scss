@@ -1,0 +1,33 @@
+:host {
+  display: block;
+  background: linear-gradient(
+    100deg,
+    var(--surface-sunken) 30%,
+    var(--n-150) 50%,
+    var(--surface-sunken) 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@media (prefers-color-scheme: dark) {
+  :host {
+    background: linear-gradient(100deg, var(--n-800) 30%, var(--n-700) 50%, var(--n-800) 70%);
+    background-size: 200% 100%;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 150% 0;
+  }
+  100% {
+    background-position: -50% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    animation: none;
+  }
+}
